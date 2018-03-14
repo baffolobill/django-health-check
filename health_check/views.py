@@ -1,7 +1,7 @@
 import copy
 from concurrent.futures import ThreadPoolExecutor
 
-from django.http import JsonResponse
+from django.http import HttpResponse
 from django.views.decorators.cache import never_cache
 from django.views.generic import TemplateView
 
@@ -33,16 +33,7 @@ class MainView(TemplateView):
                 errors.extend(ers)
 
         status_code = 500 if errors else 200
-
-        if 'application/json' in request.META.get('HTTP_ACCEPT', ''):
-            return self.render_to_response_json(plugins, status_code)
-
-        context = {'plugins': plugins, 'status_code': status_code}
-
-        return self.render_to_response(context, status=status_code)
-
-    def render_to_response_json(self, plugins, status):
-        return JsonResponse(
-            {str(p.identifier()): str(p.pretty_status()) for p in plugins},
-            status=status
+        return HttpResponse(
+            'pong' if status_code == 200 else 'sweaty',
+            status=status_code
         )
