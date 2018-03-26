@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 class CacheBackend(BaseHealthCheckBackend):
     def check_status(self):
         try:
-            cache.set('djangohealtcheck_test', 'itworks', 1)
+            cache.set('djangohealtcheck_test', 'itworks', 5)
             cache_get_value = cache.get("djangohealtcheck_test")
             if not cache_get_value == "itworks":
                 logger.warning(
